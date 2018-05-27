@@ -8,10 +8,17 @@
     <!-- Bring in our bootstrap stylesheet -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <a href="HarryPotter.mp3">Play sound file</a> -->
 
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <script type="text/javascript" src="assets/javascript/game.js"></script>
+
+    <audio autoplay loop>
+        <source src="HarryPotter.mp3">
+    </audio>
+
+
 
 </head>
 
@@ -23,6 +30,7 @@
         </div>
     </div>
 
+
     <!-- Game content-->
     <div class="row">
 
@@ -31,6 +39,7 @@
 
         <div class="col-sm-8 box-style">
             <div class="box-style">
+                <div id="musicControls"></div>
                 <div id="game">
                     Please enter a letter to start the game!
                 </div>
@@ -40,7 +49,7 @@
                 <h2 class="display-4" >Winner!!</h2>
                 <h3 class="display-4" >Loser!!</h3>
 
-                <img src="assets/images/kitty.jpg" alt="" class="img kitty" style="opacity: 1">
+                <center><img id="pic" src=""></center>
             </div>
         </div>
 

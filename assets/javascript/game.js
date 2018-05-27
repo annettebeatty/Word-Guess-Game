@@ -3,7 +3,9 @@ $(document).ready(function(){
     var game = document.getElementById("game");
     console.log(game);
 
-    var wordArray = ["cat", "frog", "horse", "dinosaur", "seahorse"];
+    var wordArray = ["cat", "frog", "horse", "monkey", "dinosaur"];
+    var imageArray = ["assets/images/kitty.jpg", "assets/images/frog.jpg", "assets/images/horse.jpg", 
+    "assets/images/monkey.jpg", "assets/images/dino.jpg"];
 
     var UserGuess = 
     {
@@ -28,19 +30,25 @@ $(document).ready(function(){
 
         console.log("Word we're guessing", wordArray[currentGame]);
 
+
+
         if (playTheGame(UserGuess, wordArray[currentGame]))
         {
             // Won
             wins++;
 
             console.log("You win!!");
+            document.getElementsByTagName("IMG")[0].setAttribute("src", imageArray[currentGame]);
             document.getElementsByTagName("H2")[0].setAttribute("class", "seeit");
 
             currentGame++;   // Increase the current game counter
 
             // No more words to guess, so game is over
-            if (resetGame(UserGuess, wordArray, currentGame) == false)
-                    console.log("No more words - Game over");
+            if (resetGame(UserGuess, wordArray, currentGame) == false)  
+            {
+                console.log("No more words - Game over");
+            //    document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
+            }
 
             console.log("New game display array after reset = ", UserGuess.displayArray);
             console.log("New guess string", UserGuess.guessString);
@@ -57,6 +65,7 @@ $(document).ready(function(){
             {   // Out of guesses
                 console.log(UserGuess.count);
                 console.log("game over");
+
                 losses++;
 
                 // Need to display the whole word, so convert it back
@@ -73,8 +82,18 @@ $(document).ready(function(){
 
                 // No more words to guess, so game is over
                 if (resetGame(UserGuess, wordArray, currentGame) == false)
-                        console.log("No more words - Game over");
+                {
+                    console.log("No more words - Game over");
+                }
+
             }
+        }
+        
+        if (currentGame >= wordArray.length)
+        {
+            displayIt(UserGuess, wins, losses);
+            document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
+
         }
 
 
