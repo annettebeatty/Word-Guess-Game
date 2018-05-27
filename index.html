@@ -8,22 +8,52 @@
     <!-- Bring in our bootstrap stylesheet -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+
+      <!-- JQuery -->
+      <script src="https://code.jquery.com/jquery.js"></script>
 <!--    <script type="text/javascript" src="assets/javascript/game.js"/> -->
 
 </head>
 
 <body>
-
-    <div id="game">
-        Please enter a letter to start the game!
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Guess the Word</h1>
+          <h1 class="display-4" id="wordToGuess">Guess words that are animals</h1>
+        </div>
     </div>
 
+    <!-- Game content-->
+    <div class="row">
+
+        <div class="col-sm-2">      
+        </div>
+
+        <div class="col-sm-8 box-style">
+            <div class="box-style">
+                <div id="game">
+                    Please enter a letter to start the game!
+                </div>
+                <p></p>
+                <div id="gamestats">
+                </div>
+                <h2 class="display-4" >Winner!!</h2>
+                <h3 class="display-4" >Loser!!</h3>
+
+                <img src="assets/images/kitty.jpg" alt="" class="img kitty" style="opacity: 1">
+            </div>
+        </div>
+
+    </div>
+
+<!-- ------------- Java script ------------  -->
     <script type="text/javascript">
+        $(document).ready(function(){
 
         var game = document.getElementById("game");
         console.log(game);
 
-        var wordArray = ["cat", "frog"];
+        var wordArray = ["cat", "frog", "horse", "dinosaur"];
 
         var UserGuess = 
         {
@@ -53,10 +83,14 @@
                 // Won
                 wins++;
 
-                alert("You win!!");
+                console.log("You win!!");
+                document.getElementsByTagName("H2")[0].setAttribute("class", "seeit");
+
                 currentGame++;   // Increase the current game counter
+
+                // No more words to guess, so game is over
                 if (resetGame(UserGuess, wordArray, currentGame) == false)
-                    document.write("Game over");
+                        console.log("No more words - Game over");
 
                 console.log("New game display array after reset = ", UserGuess.displayArray);
                 console.log("New guess string", UserGuess.guessString);
@@ -64,7 +98,7 @@
             else // Didn't win this time
             {
                 // Check guesses
-                if (UserGuess.count <= 5)
+                if (UserGuess.count <= 4)
                 {
                     // Not out of guesses
                     console.log("Still can play");
@@ -82,15 +116,18 @@
 
                     displayIt(UserGuess, wins, losses);
 
-                    alert("You lose!!")
+                    console.log("You lose!!")
+                    document.getElementsByTagName("H3")[0].setAttribute("class", "seeit");
+
                     currentGame++;   // Increase the current game counter
 
                     // No more words to guess, so game is over
                     if (resetGame(UserGuess, wordArray, currentGame) == false)
-                        document.write("Game over");
+                            console.log("No more words - Game over");
                 }
-                 
             }
+
+
         }
 
         function playTheGame(UserGuess, word, guessString)
@@ -104,6 +141,11 @@
             UserGuess.guess = UserGuess.guess.toLowerCase();  // Change to lower case
             console.log(UserGuess.guess);
             console.log(word);
+
+            // If they won or lost last time, this will clear the winner/loser tag
+            // This is very hacky, but works
+            document.getElementsByTagName("H2")[0].setAttribute("class", "hideit");
+            document.getElementsByTagName("H3")[0].setAttribute("class", "hideit");
 
             // Find it in the word array
             arrayElement = word.indexOf(UserGuess.guess);
@@ -133,7 +175,7 @@
                 if (UserGuess.guessString.indexOf(UserGuess.guess) == -1)
                 {   
                     // Haven't guessed this before
-                    UserGuess.guessString = UserGuess.guessString + UserGuess.guess;
+                    UserGuess.guessString = UserGuess.guessString + " " + UserGuess.guess;
                     UserGuess.count++;
                     console.log(UserGuess.guessString);
                 }
@@ -157,7 +199,7 @@
             {
                 if (conversionFlag)
                 {
-                    UserGuess.displayArray[i] = "-";
+                    UserGuess.displayArray[i] = "_";
                 }
                 else
                 {
@@ -184,6 +226,8 @@
             convertToArray(userGuess, wordArray[games], true);
             console.log("New word:", wordArray[games]);
             console.log("New word display: ", userGuess.displayArray);
+
+
         }
 
         function displayIt(userGuess, wins, losses)
@@ -192,15 +236,19 @@
 
             displayIt = UserGuess.displayArray.join("");
 
+            document.getElementById("wordToGuess").innerHTML = displayIt;
+
             game.innerHTML = `
                 <div>You entered: ${UserGuess.guess}</div>
-                <div>Hangman: ${displayIt}</div>
                 <div>Guesses: ${UserGuess.guessString}</div>
-                <div>Wins: ${wins}</div>
                 <div>Guesses: ${UserGuess.count}</div>
+            `
+            gamestats.innerHTML = `
+                <div>Wins: ${wins}</div>
                 <div>Losses: ${losses}</div>
             `
         }
+        });
     
     </script>
 

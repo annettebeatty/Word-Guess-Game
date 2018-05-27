@@ -1,0 +1,33 @@
+body {
+    background-size: cover;
+    background-image: url(../images/question-mark.jpg);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    visibility: hidden;
+    font-size: 50px;
+    text-align: center;
+}
+
+h3 {
+    visibility: hidden;
+    font-size: 50px;
+    text-align: center;
+}
+
+.seeit {
+    visibility: visible;
+}
+
+.hideit {
+    visibility: hidden;
+}
+
+.box-style {
+    background-color:hsl(0, 0%, 100%);
+    margin: 50px 20px 70px;
+}
