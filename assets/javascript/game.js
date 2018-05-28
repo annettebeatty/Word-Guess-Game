@@ -42,20 +42,15 @@ $(document).ready(function(){
 
             currentGame++;   // Increase the current game counter
 
-            // No more words to guess, so game is over
-            if (resetGame(UserGuess, wordArray, currentGame) == false)  
-            {
-                console.log("No more words - Game over");
-            //    document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
-            }
+            resetGame(UserGuess, wordArray, currentGame);
 
             console.log("New game display array after reset = ", UserGuess.displayArray);
             console.log("New guess string", UserGuess.guessString);
         }
         else // Didn't win this time
         {
-            // Check guesses
-            if (UserGuess.count <= 4)
+            // Check guesses - I give them 7
+            if (UserGuess.count <= 6)
             {
                 // Not out of guesses
                 console.log("Still can play");
@@ -67,7 +62,7 @@ $(document).ready(function(){
 
                 losses++;
 
-                // Need to display the whole word, so convert it back
+                // They lost, so Need to display the whole word and convert dashes back to real word
                 convertToArray(UserGuess, wordArray[currentGame], false);
 
                 console.log("Lost word display", UserGuess.displayArray);
@@ -79,20 +74,16 @@ $(document).ready(function(){
 
                 currentGame++;   // Increase the current game counter
 
-                // No more words to guess, so game is over
-                if (resetGame(UserGuess, wordArray, currentGame) == false)
-                {
-                    console.log("No more words - Game over");
-                }
-
+                // Reset the game
+                resetGame(UserGuess, wordArray, currentGame);
             }
         }
 
+        // Check if there's amy more words to guess
         if (currentGame >= wordArray.length)
         {
             displayIt(UserGuess, wins, losses);
             document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
-
         }
 
 
@@ -101,7 +92,6 @@ $(document).ready(function(){
     function playTheGame(UserGuess, word, guessString)
     {
         var arrayElement;
-        // var winner = false;
 
         console.log(word);
         console.log(UserGuess.guess);
@@ -134,6 +124,7 @@ $(document).ready(function(){
                 console.log(UserGuess.displayArray);
             }
 
+            // If there are no more dashes in the display array, then they won
             if (UserGuess.displayArray.indexOf("_") == -1)
             {
                 console.log("Won the game");
@@ -209,6 +200,7 @@ $(document).ready(function(){
             }
         }
 
+        // Make a display word with dashes
         convertToArray(userGuess, wordArray[games], true);
         UserGuess.lastWordLength = wordArray[games].length;
 
