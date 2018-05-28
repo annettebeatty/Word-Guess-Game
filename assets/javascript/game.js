@@ -3,15 +3,16 @@ $(document).ready(function(){
     var game = document.getElementById("game");
     console.log(game);
 
-    var wordArray = ["cat", "frog", "horse", "monkey", "dinosaur"];
-    var imageArray = ["assets/images/kitty.jpg", "assets/images/frog.jpg", "assets/images/horse.jpg", 
-    "assets/images/monkey.jpg", "assets/images/dino.jpg"];
+    var wordArray = ["horse", "frog", "cat", "monkey", "dinosaur", "rabbit"];
+    var imageArray = ["assets/images/horse.jpg", "assets/images/frog.jpg", "assets/images/kitty.jpg", 
+    "assets/images/monkey.jpg", "assets/images/dino.jpg", "rabbit.jpg"];
 
     var UserGuess = 
     {
         guess: "",
         guessString: "",
         displayArray: [],
+        lastWordLength: 0,
         count: 0
     }
 
@@ -29,8 +30,6 @@ $(document).ready(function(){
         console.log(play);
 
         console.log("Word we're guessing", wordArray[currentGame]);
-
-
 
         if (playTheGame(UserGuess, wordArray[currentGame]))
         {
@@ -88,7 +87,7 @@ $(document).ready(function(){
 
             }
         }
-        
+
         if (currentGame >= wordArray.length)
         {
             displayIt(UserGuess, wins, losses);
@@ -124,9 +123,14 @@ $(document).ready(function(){
         {
             if (UserGuess.displayArray.indexOf(UserGuess.guess) == -1)
             {   
-                // Haven't guessed this before
+                // Haven't guessed this before.  Stuff into the display
                 console.log("Good guess");
-                UserGuess.displayArray[arrayElement] = UserGuess.guess;
+
+                while (arrayElement > -1) {  
+                    UserGuess.displayArray[arrayElement++] = UserGuess.guess;
+                    arrayElement = word.indexOf(UserGuess.guess, arrayElement);
+                }
+
                 console.log(UserGuess.displayArray);
             }
 
@@ -192,10 +196,24 @@ $(document).ready(function(){
         {
             return false;   // No more words
         }
+
+        let extraSpace = UserGuess.lastWordLength - wordArray[games].length;
+
+        console.log("Extra space: ", extraSpace);
+
+        if (extraSpace > 0)  // Kill extra spaces if last word was long
+        {
+            for (var i = wordArray[games].length; i < wordArray[games].length + extraSpace; i++)
+            {
+                UserGuess.displayArray[i] = " ";
+            }
+        }
+
         convertToArray(userGuess, wordArray[games], true);
+        UserGuess.lastWordLength = wordArray[games].length;
+
         console.log("New word:", wordArray[games]);
         console.log("New word display: ", userGuess.displayArray);
-
 
     }
 
