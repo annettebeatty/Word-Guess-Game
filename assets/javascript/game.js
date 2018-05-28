@@ -44,6 +44,8 @@ $(document).ready(function(){
             wins++;
 
             console.log("You win!!");
+            displayIt(UserGuess, wins, losses);
+
             // Show animal picture
             document.getElementsByTagName("IMG")[0].setAttribute("src", imageArray[currentGame]);
             // Show winner 
@@ -138,9 +140,8 @@ $(document).ready(function(){
             if (UserGuess.displayArray.indexOf("_") == -1)
             {
                 console.log("Won the game");
-
+                
                 //Won the game
-                displayIt(UserGuess, wins, losses);
                 return true;
             }
         }
