@@ -37,8 +37,10 @@ $(document).ready(function(){
             wins++;
 
             console.log("You win!!");
+            // Show animal picture
             document.getElementsByTagName("IMG")[0].setAttribute("src", imageArray[currentGame]);
-            document.getElementsByTagName("H2")[0].setAttribute("class", "seeit");
+            // Show winner 
+            document.getElementsByTagName("H2")[0].setAttribute("class", "seeit"); 
 
             currentGame++;   // Increase the current game counter
 
@@ -70,6 +72,7 @@ $(document).ready(function(){
                 displayIt(UserGuess, wins, losses);
 
                 console.log("You lose!!")
+                // Show loser text
                 document.getElementsByTagName("H3")[0].setAttribute("class", "seeit");
 
                 currentGame++;   // Increase the current game counter
@@ -82,6 +85,7 @@ $(document).ready(function(){
         // Check if there's amy more words to guess
         if (currentGame >= wordArray.length)
         {
+            // No more words to guess
             displayIt(UserGuess, wins, losses);
             document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
         }
@@ -105,7 +109,7 @@ $(document).ready(function(){
         document.getElementsByTagName("H2")[0].setAttribute("class", "hideit");
         document.getElementsByTagName("H3")[0].setAttribute("class", "hideit");
 
-        // Find it in the word array
+        // Find guess letter in the word array
         arrayElement = word.indexOf(UserGuess.guess);
         console.log(arrayElement);
 
@@ -116,6 +120,7 @@ $(document).ready(function(){
                 // Haven't guessed this before.  Stuff into the display
                 console.log("Good guess");
 
+                // Loops through to get all occurences of the letter in the word
                 while (arrayElement > -1) {  
                     UserGuess.displayArray[arrayElement++] = UserGuess.guess;
                     arrayElement = word.indexOf(UserGuess.guess, arrayElement);
@@ -128,6 +133,7 @@ $(document).ready(function(){
             if (UserGuess.displayArray.indexOf("_") == -1)
             {
                 console.log("Won the game");
+
                 //Won the game
                 displayIt(UserGuess, wins, losses);
                 return true;
@@ -135,10 +141,10 @@ $(document).ready(function(){
         }
         else  // Guess is bad
         {
-            // Guessed before?
+            // Check if we've guessed this letter before
             if (UserGuess.guessString.indexOf(UserGuess.guess) == -1)
             {   
-                // Haven't guessed this before
+                // Haven't guessed this before, so add it to the letters guessed string
                 UserGuess.guessString = UserGuess.guessString + " " + UserGuess.guess;
                 UserGuess.count++;
                 console.log(UserGuess.guessString);
@@ -154,7 +160,8 @@ $(document).ready(function(){
 
     function convertToArray(UserGuess, word, conversionFlag)
     {
-        // Conversion flag - if true, then convert to dashes, if false, then convert to word
+        // Conversion flag - if true, then convert to dashes since it's a reset
+        // If false, then convert to word to display so they can see the word they missed
 
         console.log("Converting this word", word);
 
@@ -182,17 +189,19 @@ $(document).ready(function(){
         console.log("Total number of games: ", wordArray.length);
         console.log("This game: ", games);
 
-        // Check if out of word
+        // Check if out of words
         if (games >= wordArray.length)
         {
             return false;   // No more words
         }
 
+        // This figures out if the last guessed word is longer than the current word
+        // We'll need to clean out the display array if the last word was longer
         let extraSpace = UserGuess.lastWordLength - wordArray[games].length;
 
         console.log("Extra space: ", extraSpace);
 
-        if (extraSpace > 0)  // Kill extra spaces if last word was long
+        if (extraSpace > 0)  // Fill with extra spaces if last word was long
         {
             for (var i = wordArray[games].length; i < wordArray[games].length + extraSpace; i++)
             {
@@ -213,6 +222,7 @@ $(document).ready(function(){
     {
         var displayIt;
 
+        // This converts array comma delimination to spaces for display to user
         displayIt = UserGuess.displayArray.join(" ");
 
         document.getElementById("wordToGuess").innerHTML = displayIt;
