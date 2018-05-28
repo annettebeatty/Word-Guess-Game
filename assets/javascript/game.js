@@ -20,6 +20,7 @@ $(document).ready(function(){
     var wins = 0;
     var losses = 0;
     var currentGame = 0;
+    var letters = "abcdefghijklmnopqrstuvwxyz";
 
     resetGame(UserGuess, wordArray, currentGame);
 
@@ -31,66 +32,69 @@ $(document).ready(function(){
 
         console.log("Word we're guessing", wordArray[currentGame]);
 
-        if (playTheGame(UserGuess, wordArray[currentGame]))
+        // Only take characters
+        if (letters.indexOf(UserGuess.guess) > -1)
         {
-            // Won
-            wins++;
-
-            console.log("You win!!");
-            // Show animal picture
-            document.getElementsByTagName("IMG")[0].setAttribute("src", imageArray[currentGame]);
-            // Show winner 
-            document.getElementsByTagName("H2")[0].setAttribute("class", "seeit"); 
-
-            currentGame++;   // Increase the current game counter
-
-            resetGame(UserGuess, wordArray, currentGame);
-
-            console.log("New game display array after reset = ", UserGuess.displayArray);
-            console.log("New guess string", UserGuess.guessString);
-        }
-        else // Didn't win this time
-        {
-            // Check guesses - I give them 7
-            if (UserGuess.count <= 6)
+            // Main game logic
+            if (playTheGame(UserGuess, wordArray[currentGame]))
             {
-                // Not out of guesses
-                console.log("Still can play");
-            }
-            else
-            {   // Out of guesses
-                console.log(UserGuess.count);
-                console.log("game over");
+                // Won
+                wins++;
 
-                losses++;
-
-                // They lost, so Need to display the whole word and convert dashes back to real word
-                convertToArray(UserGuess, wordArray[currentGame], false);
-
-                console.log("Lost word display", UserGuess.displayArray);
-
-                displayIt(UserGuess, wins, losses);
-
-                console.log("You lose!!")
-                // Show loser text
-                document.getElementsByTagName("H3")[0].setAttribute("class", "seeit");
+                console.log("You win!!");
+                // Show animal picture
+                document.getElementsByTagName("IMG")[0].setAttribute("src", imageArray[currentGame]);
+                // Show winner 
+                document.getElementsByTagName("H2")[0].setAttribute("class", "seeit"); 
 
                 currentGame++;   // Increase the current game counter
 
-                // Reset the game
                 resetGame(UserGuess, wordArray, currentGame);
+
+                console.log("New game display array after reset = ", UserGuess.displayArray);
+                console.log("New guess string", UserGuess.guessString);
+            }
+            else // Didn't win this time
+            {
+                // Check guesses - I give them 7
+                if (UserGuess.count <= 6)
+                {
+                    // Not out of guesses
+                    console.log("Still can play");
+                }
+                else
+                {   // Out of guesses
+                    console.log(UserGuess.count);
+                    console.log("game over");
+
+                    losses++;
+
+                    // They lost, so Need to display the whole word and convert dashes back to real word
+                    convertToArray(UserGuess, wordArray[currentGame], false);
+
+                    console.log("Lost word display", UserGuess.displayArray);
+
+                    displayIt(UserGuess, wins, losses);
+
+                    console.log("You lose!!")
+                    // Show loser text
+                    document.getElementsByTagName("H3")[0].setAttribute("class", "seeit");
+
+                    currentGame++;   // Increase the current game counter
+
+                    // Reset the game
+                    resetGame(UserGuess, wordArray, currentGame);
+                }
+            }
+
+            // Check if there's amy more words to guess
+            if (currentGame >= wordArray.length)
+            {
+                // No more words to guess
+                displayIt(UserGuess, wins, losses);
+                document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
             }
         }
-
-        // Check if there's amy more words to guess
-        if (currentGame >= wordArray.length)
-        {
-            // No more words to guess
-            displayIt(UserGuess, wins, losses);
-            document.getElementsByTagName("IMG")[0].setAttribute("src", "assets/images/over.jpg");
-        }
-
-
     }
 
     function playTheGame(UserGuess, word, guessString)
